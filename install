@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+mkdir -p ~/.config/nvim
+
+git config --global core.excludesfile ~/.gitignore
+
+ln -s ~/dotfiles/gitignore_global ~/.gitignore
+ln -s ~/dotfiles/init.vim ~/.config/nvim/init.vim
