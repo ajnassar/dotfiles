@@ -1,4 +1,3 @@
-" Credits go to ThePrimeagen and Chrisatmachine
 
 " SETS
 set relativenumber
@@ -21,6 +20,8 @@ set scrolloff=8
 set signcolumn=yes
 set isfname+=@-@
 set ls=0
+set laststatus=2
+set statusline+=%F
 " Give more space for displaying messages.
 set cmdheight=1
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
