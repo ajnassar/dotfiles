@@ -1,4 +1,3 @@
-
 " SETS
 set relativenumber
 set nohlsearch
@@ -29,7 +28,7 @@ set cmdheight=1
 set updatetime=50
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
-set colorcolumn=80
+set colorcolumn=120
 
 " MAPS
 let mapleader = " "
