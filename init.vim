@@ -4,8 +4,8 @@ set relativenumber
 set nohlsearch
 set hidden
 set noerrorbells
-set tabstop=4 softtabstop=4
-set shiftwidth=4
+set tabstop=2 softtabstop=2
+set shiftwidth=2
 set expandtab
 set smartindent
 set nu
@@ -30,7 +30,6 @@ set updatetime=50
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 set colorcolumn=80
-
 
 " MAPS
 let mapleader = " "
@@ -134,7 +133,7 @@ nnoremap <leader>f :Rg <C-R><C-W><CR>
 nnoremap <leader>t :Tags<CR>
 nnoremap <leader>m :Marks<CR>
 
-let g:fzf_tags_command = 'ctags -R'
+let g:fzf_tags_command = 'ctags -R --exclude=.git .'
 " Border color
 let g:fzf_layout = {'up':'~90%', 'window': { 'width': 0.8, 'height': 0.8,'yoffset':0.5,'xoffset': 0.5, 'highlight': 'Todo', 'border': 'sharp' } }
 
