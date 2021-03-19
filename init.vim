@@ -4,6 +4,7 @@ set nohlsearch
 set hidden
 set noerrorbells
 set tabstop=2 softtabstop=2
+set autoindent
 set shiftwidth=2
 set expandtab
 set smartindent
@@ -65,6 +66,9 @@ nnoremap <leader>Y gg"+yG
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 
+" Hunks
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
 
 " PLUGINS
 call plug#begin('~/.vim/plugged')
@@ -74,6 +78,7 @@ Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
 Plug 'mbbill/undotree'
 Plug 'gruvbox-community/gruvbox'
+Plug 'airblade/vim-gitgutter'
 call plug#end()
 
 colorscheme gruvbox
