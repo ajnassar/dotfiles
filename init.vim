@@ -54,7 +54,7 @@ nnoremap <S-Up> :m-2<CR>
 nnoremap <S-Down> :m+<CR>
 inoremap <S-Up> <Esc>:m-2<CR>
 inoremap <S-Down> <Esc>:m+<CR>
-
+nnoremap <C-o> :Mru<CR>
 " greatest remap ever
 vnoremap <leader>p "_dP
 
@@ -66,20 +66,29 @@ nnoremap <leader>Y gg"+yG
 nnoremap <leader>d "_d
 vnoremap <leader>d "_d
 
-" Hunks
-nmap ]h <Plug>(GitGutterNextHunk)
-nmap [h <Plug>(GitGutterPrevHunk)
+" for command mode
+nnoremap <S-Tab> <<
+nnoremap <Tab> >>
+" for insert mode
+inoremap <S-Tab> <C-d>
 
 " PLUGINS
 call plug#begin('~/.vim/plugged')
+Plug 'dkprice/vim-easygrep'
+Plug 'yegappan/mru'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
 Plug 'mbbill/undotree'
 Plug 'gruvbox-community/gruvbox'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
+
+" Hunks
+nmap ]h <Plug>(GitGutterNextHunk)
+nmap [h <Plug>(GitGutterPrevHunk)
 
 colorscheme gruvbox
 
@@ -186,3 +195,10 @@ command! -bang -nargs=* GGrep
             \ call fzf#vim#grep(
             \   'git grep --line-number '.shellescape(<q-args>), 0,
             \   fzf#vim#with_preview({'dir': systemlist('git rev-parse--show-toplevel')[0]}), <bang>0)
+
+map <Leader>p :call InsertLine()<CR>
+
+function! InsertLine()
+  let trace = expand("import pdb; pdb.set_trace()")
+  execute "normal o".trace
+endfunction
