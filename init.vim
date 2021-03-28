@@ -72,6 +72,9 @@ nnoremap <Tab> >>
 " for insert mode
 inoremap <S-Tab> <C-d>
 
+command! ClearQuickfixList cexpr []
+nmap <leader>cf :ClearQuickfixList<cr>
+
 " PLUGINS
 call plug#begin('~/.vim/plugged')
 Plug 'dkprice/vim-easygrep'
