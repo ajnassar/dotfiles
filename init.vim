@@ -18,10 +18,11 @@ set incsearch
 set termguicolors
 set scrolloff=8
 set signcolumn=yes
+set cursorline
 set isfname+=@-@
 set ls=0
 set laststatus=2
-set statusline+=%F
+set statusline+=%F%m
 " Give more space for displaying messages.
 set cmdheight=1
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
@@ -43,8 +44,8 @@ nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
 nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <leader>pv :Ex<CR>
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <Leader>+ :vertical resize +5<CR>
-nnoremap <Leader>- :vertical resize -5<CR>
+nnoremap <Leader>+ :vertical resize +20<CR>
+nnoremap <Leader>- :vertical resize -20<CR>
 nnoremap <Leader>rp :resize 100<CR>
 nnoremap <Leader>ee oif err != nil {<CR>log.Fatalf("%+v\n", err)<CR>}<CR><esc>kkI<esc>
 nnoremap <Leader>cpu a%" PRIu64 "<esc>
@@ -72,8 +73,12 @@ nnoremap <Tab> >>
 " for insert mode
 inoremap <S-Tab> <C-d>
 
+nnoremap <Leader>1 :e $MYVIMRC<cr>
+nnoremap <Leader>2 :e ~/.gitignore<cr>
+
 " PLUGINS
 call plug#begin('~/.vim/plugged')
+Plug 'tpope/vim-surround'
 Plug 'dkprice/vim-easygrep'
 Plug 'yegappan/mru'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -85,6 +90,8 @@ Plug 'mbbill/undotree'
 Plug 'gruvbox-community/gruvbox'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
+
+let g:EasyGrepFilesToExclude = '*.swp,*~,*.venv,*.pyc'
 
 " Hunks
 nmap ]h <Plug>(GitGutterNextHunk)
@@ -106,20 +113,14 @@ augroup END
 
 fun! CheesybaconTurnOnGuides()
     set rnu
-    set nu
-    set signcolumn=yes
-    set colorcolumn=80
 endfun
 
 fun! CheesybaconTurnOffGuides()
     set nornu
-    set nonu
-    set signcolumn=no
-    set colorcolumn=800
 endfun
 
-nnoremap <leader>ao :call CheesybaconTurnOnGuides()<cr>
-nnoremap <leader>ae :call CheesybaconTurnOffGuides()<cr>
+nnoremap <leader>3 :call CheesybaconTurnOnGuides()<cr>
+nnoremap <leader>4 :call CheesybaconTurnOffGuides()<cr>
 
 augroup CHEESYBACON_MINIMAL
     autocmd!
@@ -196,7 +197,7 @@ command! -bang -nargs=* GGrep
             \   'git grep --line-number '.shellescape(<q-args>), 0,
             \   fzf#vim#with_preview({'dir': systemlist('git rev-parse--show-toplevel')[0]}), <bang>0)
 
-map <Leader>p :call InsertLine()<CR>
+map <Leader>z :call InsertLine()<CR>
 
 function! InsertLine()
   let trace = expand("import pdb; pdb.set_trace()")
