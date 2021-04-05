@@ -75,6 +75,8 @@ inoremap <S-Tab> <C-d>
 
 nnoremap <Leader>1 :e $MYVIMRC<cr>
 nnoremap <Leader>2 :e ~/.gitignore<cr>
+command! ClearQuickfixList cexpr []
+nmap <leader>cf :ClearQuickfixList<cr>
 
 " PLUGINS
 call plug#begin('~/.vim/plugged')
