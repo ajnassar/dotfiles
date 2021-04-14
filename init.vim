@@ -80,7 +80,9 @@ nmap <leader>cf :ClearQuickfixList<cr>
 
 " PLUGINS
 call plug#begin('~/.vim/plugged')
+" Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'tpope/vim-surround'
+Plug 'fisadev/vim-isort'
 Plug 'dkprice/vim-easygrep'
 Plug 'yegappan/mru'
 Plug 'mg979/vim-visual-multi', {'branch': 'master'}
@@ -93,7 +95,9 @@ Plug 'gruvbox-community/gruvbox'
 Plug 'airblade/vim-gitgutter'
 call plug#end()
 
-let g:EasyGrepFilesToExclude = '*.swp,*~,*.venv,*.pyc'
+" let g:coc_global_extensions = ['coc-json', 'coc-python', 'coc-yaml']
+let g:EasyGrepFilesToExclude = '*.swp,*~,*.venv,*.pyc,tags'
+let g:python3_host_prog = "~/.venv/bin/python3"
 
 " Hunks
 nmap ]h <Plug>(GitGutterNextHunk)
@@ -102,10 +106,12 @@ nmap [h <Plug>(GitGutterPrevHunk)
 colorscheme gruvbox
 
 " AUTO COMMANDS
-augroup highlight_yank
-    autocmd!
-    autocmd TextYankPost * silent! lua require'vim.highlight'.on_yank({timeout = 40})
-augroup END
+
+" On save call Isort
+autocmd BufWritePost * call Isort()
+function! Isort()
+  :Isort
+endfunction
 
 augroup CHEESYBACON
     autocmd!
@@ -204,4 +210,12 @@ map <Leader>z :call InsertLine()<CR>
 function! InsertLine()
   let trace = expand("import pdb; pdb.set_trace()")
   execute "normal o".trace
+endfunction
+
+map <Leader>x :call InsertSlackDebug()<CR>
+
+function! InsertSlackDebug()
+  let trace = expand("from htk import slack_debug;slack_debug()")
+  execute "normal o".trace
+  execute "normal t)"
 endfunction
