@@ -1,6 +1,5 @@
 " SETS
 set relativenumber
-set nohlsearch
 set hidden
 set noerrorbells
 set tabstop=2 softtabstop=2
@@ -31,7 +30,8 @@ set updatetime=50
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 set colorcolumn=120
-
+nnoremap g, <C-o>
+nnoremap g. <C-i>
 " MAPS
 let mapleader = " "
 nnoremap <leader>h :wincmd h<CR>
@@ -81,6 +81,7 @@ nmap <leader>cf :ClearQuickfixList<cr>
 " PLUGINS
 call plug#begin('~/.vim/plugged')
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-surround'
 Plug 'fisadev/vim-isort'
 Plug 'dkprice/vim-easygrep'
@@ -98,6 +99,7 @@ call plug#end()
 " let g:coc_global_extensions = ['coc-json', 'coc-python', 'coc-yaml']
 let g:EasyGrepFilesToExclude = '*.swp,*~,*.venv,*.pyc,tags'
 let g:python3_host_prog = "~/.venv/bin/python3"
+let g:flake8_show_in_file = 1
 
 " Hunks
 nmap ]h <Plug>(GitGutterNextHunk)
@@ -213,9 +215,69 @@ function! InsertLine()
 endfunction
 
 map <Leader>x :call InsertSlackDebug()<CR>
+map <Leader>z :call InsertSlackJsonDebug()<CR>
+map <Leader>d :call InsertPythonDebug()<CR>
+map <Leader>p1 :call Insert1()<CR>
+map <Leader>p2 :call Insert2()<CR>
+map <Leader>p3 :call Insert3()<CR>
+map <Leader>p4 :call Insert4()<CR>
+map <Leader>p5 :call Insert5()<CR>
+map <Leader>p6 :call Insert6()<CR>
+map <Leader>p7 :call Insert7()<CR>
+map <Leader>p8 :call Insert8()<CR>
 
+function! InsertPythonDebug()
+  let trace = expand("import pdb;pdb.set_trace()")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! InsertSlackJsonDebug()
+  let trace = expand("from htk import slack_debug_json;slack_debug_json()")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
 function! InsertSlackDebug()
   let trace = expand("from htk import slack_debug;slack_debug()")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert1()
+  let trace = expand("print('1111111111111111111111')")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert2()
+  let trace = expand("print('22222222222222222222222')")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert3()
+  let trace = expand("print('33333333333333333333333')")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert4()
+  let trace = expand("print('44444444444444444444444')")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert5()
+  let trace = expand("print('555555555555555555555555')")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert6()
+  let trace = expand("print('666666666666666666666666')")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert7()
+  let trace = expand("print('7777777777777777777777')")
+  execute "normal o".trace
+  execute "normal t)"
+endfunction
+function! Insert8()
+  let trace = expand("print('88888888888888888888888')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
