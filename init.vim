@@ -11,7 +11,8 @@ set nu
 set nowrap
 set noswapfile
 set nobackup
-set undodir=~/.vim/undodir
+# set undodir=~/.vim/undodir
+set undodir=~/.nvim/undodir
 set undofile
 set incsearch
 set termguicolors
@@ -73,14 +74,31 @@ nnoremap <Tab> >>
 " for insert mode
 inoremap <S-Tab> <C-d>
 
-nnoremap <Leader>1 :e $MYVIMRC<cr>
-nnoremap <Leader>2 :e ~/.gitignore<cr>
+nnoremap <Leader>7 :e $MYVIMRC<cr>
+nnoremap <Leader>8 :e ~/.gitignore<cr>
 command! ClearQuickfixList cexpr []
 nmap <leader>cf :ClearQuickfixList<cr>
+
+map <silent> <leader>w :lua require('nvim-window').pick()<CR>
+
+" Go to tab by number
+noremap <leader>1 1gt
+noremap <leader>2 2gt
+noremap <leader>3 3gt
+noremap <leader>4 4gt
+noremap <leader>5 5gt
+noremap <leader>6 6gt
+
+" Go to last active tab
+
+au TabLeave * let g:lasttab = tabpagenr()
+nnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
+vnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
 
 " PLUGINS
 call plug#begin('~/.vim/plugged')
 " Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
 Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-surround'
 Plug 'fisadev/vim-isort'
@@ -129,8 +147,8 @@ fun! CheesybaconTurnOffGuides()
     set nornu
 endfun
 
-nnoremap <leader>3 :call CheesybaconTurnOnGuides()<cr>
-nnoremap <leader>4 :call CheesybaconTurnOffGuides()<cr>
+nnoremap <leader>9 :call CheesybaconTurnOnGuides()<cr>
+nnoremap <leader>0 :call CheesybaconTurnOffGuides()<cr>
 
 augroup CHEESYBACON_MINIMAL
     autocmd!
@@ -225,6 +243,11 @@ map <Leader>p5 :call Insert5()<CR>
 map <Leader>p6 :call Insert6()<CR>
 map <Leader>p7 :call Insert7()<CR>
 map <Leader>p8 :call Insert8()<CR>
+map <Leader>n :!python -m json.tool<CR>
+
+function! FormatJson()
+  return ":!python -m json.tool"
+endfunction
 
 function! InsertPythonDebug()
   let trace = expand("import pdb;pdb.set_trace()")
@@ -242,42 +265,42 @@ function! InsertSlackDebug()
   execute "normal t)"
 endfunction
 function! Insert1()
-  let trace = expand("print('1111111111111111111111')")
+  let trace = expand("from htk import fdebug; fdebug('1111111111111111111111')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
 function! Insert2()
-  let trace = expand("print('22222222222222222222222')")
+  let trace = expand("from htk import fdebug; fdebug('22222222222222222222222')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
 function! Insert3()
-  let trace = expand("print('33333333333333333333333')")
+  let trace = expand("from htk import fdebug; fdebug('33333333333333333333333')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
 function! Insert4()
-  let trace = expand("print('44444444444444444444444')")
+  let trace = expand("from htk import fdebug; fdebug('44444444444444444444444')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
 function! Insert5()
-  let trace = expand("print('555555555555555555555555')")
+  let trace = expand("from htk import fdebug; fdebug('555555555555555555555555')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
 function! Insert6()
-  let trace = expand("print('666666666666666666666666')")
+  let trace = expand("from htk import fdebug; fdebug('666666666666666666666666')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
 function! Insert7()
-  let trace = expand("print('7777777777777777777777')")
+  let trace = expand("from htk import fdebug; fdebug('7777777777777777777777')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
 function! Insert8()
-  let trace = expand("print('88888888888888888888888')")
+  let trace = expand("from htk import fdebug; fdebug('88888888888888888888888')")
   execute "normal o".trace
   execute "normal t)"
 endfunction
