@@ -1,5 +1,4 @@
 " SETS
-set relativenumber
 set hidden
 set noerrorbells
 set tabstop=2 softtabstop=2
@@ -11,7 +10,7 @@ set nu
 set nowrap
 set noswapfile
 set nobackup
-# set undodir=~/.vim/undodir
+" set undodir=~/.vim/undodir
 set undodir=~/.nvim/undodir
 set undofile
 set incsearch
@@ -27,10 +26,13 @@ set statusline+=%F%m
 set cmdheight=1
 " Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
 " delays and poor user experience.
-set updatetime=50
+set updatetime=300
 " Don't pass messages to |ins-completion-menu|.
 set shortmess+=c
 set colorcolumn=120
+set completeopt=menu
+set nornu
+
 nnoremap g, <C-o>
 nnoremap g. <C-i>
 " MAPS
@@ -45,7 +47,7 @@ nnoremap <leader>bs /<C-R>=escape(expand("<cWORD>"), "/")<CR><CR>
 nnoremap <leader>u :UndotreeShow<CR>
 nnoremap <leader>pv :Ex<CR>
 nnoremap <Leader><CR> :so ~/.config/nvim/init.vim<CR>
-nnoremap <Leader>+ :vertical resize +20<CR>
+nnoremap <Leader>= :vertical resize +20<CR>
 nnoremap <Leader>- :vertical resize -20<CR>
 nnoremap <Leader>rp :resize 100<CR>
 nnoremap <Leader>ee oif err != nil {<CR>log.Fatalf("%+v\n", err)<CR>}<CR><esc>kkI<esc>
@@ -88,16 +90,40 @@ noremap <leader>3 3gt
 noremap <leader>4 4gt
 noremap <leader>5 5gt
 noremap <leader>6 6gt
+noremap <c-S-Right> gt
+noremap <c-S-Left> gT
 
 " Go to last active tab
-
 au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
 vnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
+inoremap <silent><expr> <TAB>
+      \ pumvisible() ? "\<C-n>" :
+      \ <SID>check_back_space() ? "\<TAB>" :
+      \ coc#refresh()
+inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
+
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+" Use <c-space> to trigger completion.
+if has('nvim')
+  inoremap <silent><expr> <c-space> coc#refresh()
+else
+  inoremap <silent><expr> <c-@> coc#refresh()
+endif
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+
+call plug#begin('~/.vim/plugged')
 
 " PLUGINS
 call plug#begin('~/.vim/plugged')
-" Plug 'neoclide/coc.nvim', {'branch': 'release'}
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'https://gitlab.com/yorickpeterse/nvim-window.git'
 Plug 'nvie/vim-flake8'
 Plug 'tpope/vim-surround'
@@ -118,6 +144,7 @@ call plug#end()
 let g:EasyGrepFilesToExclude = '*.swp,*~,*.venv,*.pyc,tags'
 let g:python3_host_prog = "~/.venv/bin/python3"
 let g:flake8_show_in_file = 1
+let g:coc_diagnostic_disable=1
 
 " Hunks
 nmap ]h <Plug>(GitGutterNextHunk)
@@ -137,23 +164,6 @@ augroup CHEESYBACON
     autocmd!
     autocmd BufWritePre * %s/\s\+$//e
     autocmd BufEnter,BufWinEnter,TabEnter *.rs :lua require'lsp_extensions'.inlay_hints{}
-augroup END
-
-fun! CheesybaconTurnOnGuides()
-    set rnu
-endfun
-
-fun! CheesybaconTurnOffGuides()
-    set nornu
-endfun
-
-nnoremap <leader>9 :call CheesybaconTurnOnGuides()<cr>
-nnoremap <leader>0 :call CheesybaconTurnOffGuides()<cr>
-
-augroup CHEESYBACON_MINIMAL
-    autocmd!
-    autocmd FileType *\(^\(netrw\|help\)\)\@<! :call CheesybaconTurnOnGuides()
-    autocmd FileType netrw,help :call CheesybaconTurnOffGuides()
 augroup END
 
 " This is the default extra key bindings
@@ -265,7 +275,7 @@ function! InsertSlackDebug()
   execute "normal t)"
 endfunction
 function! Insert1()
-  let trace = expand("from htk import fdebug; fdebug('1111111111111111111111')")
+  let trace = expand("from htk import fdebug; fdebug()")
   execute "normal o".trace
   execute "normal t)"
 endfunction
