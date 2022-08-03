@@ -32,6 +32,10 @@ set shortmess+=c
 set colorcolumn=120
 set completeopt=menu
 set nornu
+set spell spelllang=en_us
+" set foldmethod=indent
+" set foldlevel=1
+" set foldclose=all
 
 nnoremap g, <C-o>
 nnoremap g. <C-i>
@@ -136,9 +140,17 @@ Plug 'tpope/vim-commentary'
 Plug 'junegunn/fzf.vim'
 Plug 'airblade/vim-rooter'
 Plug 'mbbill/undotree'
-Plug 'gruvbox-community/gruvbox'
 Plug 'airblade/vim-gitgutter'
+Plug 'dense-analysis/ale'
+" Colors
+Plug 'gruvbox-community/gruvbox'
+Plug 'catppuccin/nvim', {'as': 'catppuccin'}
 call plug#end()
+
+" Ale
+let g:ale_linters = {'python': ['flake8']}
+let g_ale_linters_explicit = 1
+let g:ale_lint_on_enter = 1
 
 " let g:coc_global_extensions = ['coc-json', 'coc-python', 'coc-yaml']
 let g:EasyGrepFilesToExclude = '*.swp,*~,*.venv,*.pyc,tags'
@@ -151,13 +163,16 @@ nmap ]h <Plug>(GitGutterNextHunk)
 nmap [h <Plug>(GitGutterPrevHunk)
 
 colorscheme gruvbox
+" colorscheme catppuccin
 
 " AUTO COMMANDS
 
 " On save call Isort
 autocmd BufWritePost * call Isort()
 function! Isort()
-  :Isort
+  if &filetype ==# 'python'
+    :Isort
+  endif
 endfunction
 
 augroup CHEESYBACON
@@ -238,7 +253,8 @@ command! -bang -nargs=* GGrep
 map <Leader>z :call InsertLine()<CR>
 
 function! InsertLine()
-  let trace = expand("import pdb; pdb.set_trace()")
+  " let trace = expand("import pdb; pdb.set_trace()")
+  let trace = expand("breakpoint()")
   execute "normal o".trace
 endfunction
 
