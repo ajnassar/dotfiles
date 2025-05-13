@@ -37,6 +37,8 @@ set spell spelllang=en_us
 " set foldlevel=1
 " set foldclose=all
 
+let g:airline#extensions#tagbar#flags = 'f'  " show full tag hierarchy
+
 nnoremap g, <C-o>
 nnoremap g. <C-i>
 " MAPS
@@ -101,27 +103,29 @@ noremap <c-S-Left> gT
 au TabLeave * let g:lasttab = tabpagenr()
 nnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
 vnoremap <silent> <c-l> :exe "tabn ".g:lasttab<cr>
-inoremap <silent><expr> <TAB>
-      \ pumvisible() ? "\<C-n>" :
-      \ <SID>check_back_space() ? "\<TAB>" :
-      \ coc#refresh()
-inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-
+" inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
+" inoremap <silent><expr> <C-x><C-z> coc#pum#visible() ? coc#pum#stop() : "\<C-x>\<C-z>"
+" remap for complete to use tab and <cr>
+" inoremap <silent><expr> <TAB>
+"     \ coc#pum#visible() ? coc#pum#next(1):
+"     \ <SID>check_back_space() ? "\<Tab>" :
+"     \ coc#refresh()
+" inoremap <expr><S-TAB> coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"
+" inoremap <silent><expr> <c-space> coc#refresh()
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
 " Use <c-space> to trigger completion.
-if has('nvim')
-  inoremap <silent><expr> <c-space> coc#refresh()
-else
-  inoremap <silent><expr> <c-@> coc#refresh()
-endif
-inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                              \: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-xmap <leader>f  <Plug>(coc-format-selected)
-nmap <leader>f  <Plug>(coc-format-selected)
+" if has('nvim')
+"   inoremap <silent><expr> <c-space> coc#refresh()
+" else
+"   inoremap <silent><expr> <c-@> coc#refresh()
+" endif
+" inoremap <silent><expr> <CR> coc#pum#visible() ? coc#pum#confirm() : "\<C-y>"
+" xmap <leader>f  <Plug>(coc-format-selected)
+" nmap <leader>f  <Plug>(coc-format-selected)
 
 call plug#begin('~/.vim/plugged')
 
@@ -142,6 +146,12 @@ Plug 'airblade/vim-rooter'
 Plug 'mbbill/undotree'
 Plug 'airblade/vim-gitgutter'
 Plug 'dense-analysis/ale'
+Plug 'bling/vim-airline'
+Plug 'majutsushi/tagbar'
+" wrap functions
+Plug 'AckslD/nvim-revJ.lua'
+Plug 'kana/vim-textobj-user'
+Plug 'sgur/vim-textobj-parameter'
 " Colors
 Plug 'gruvbox-community/gruvbox'
 Plug 'catppuccin/nvim', {'as': 'catppuccin'}
@@ -154,7 +164,8 @@ let g:ale_lint_on_enter = 1
 
 " let g:coc_global_extensions = ['coc-json', 'coc-python', 'coc-yaml']
 let g:EasyGrepFilesToExclude = '*.swp,*~,*.venv,*.pyc,tags'
-let g:python3_host_prog = "~/.venv/bin/python3"
+let g:python3_host_prog = "/usr/bin/python"
+let g:coc_node_path = '/usr/bin/node'
 let g:flake8_show_in_file = 1
 let g:coc_diagnostic_disable=1
 
@@ -167,7 +178,7 @@ colorscheme gruvbox
 
 " AUTO COMMANDS
 
-" On save call Isort
+" " On save call Isort
 autocmd BufWritePost * call Isort()
 function! Isort()
   if &filetype ==# 'python'
@@ -276,7 +287,7 @@ function! FormatJson()
 endfunction
 
 function! InsertPythonDebug()
-  let trace = expand("import pdb;pdb.set_trace()")
+  let trace = expand("breakpoint()")
   execute "normal o".trace
   execute "normal t)"
 endfunction
